@@ -1,4 +1,8 @@
 const msg: string = "hello world!";
 console.log(msg);
 
-let x
+const myFunc = (num: number): number => {
+    return num * num;
+};
+
+export default myFunc;
