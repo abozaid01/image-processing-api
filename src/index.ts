@@ -1,2 +1,4 @@
-const msg:string = "hello world!";
+const msg: string = "hello world!";
 console.log(msg);
+
+let x
