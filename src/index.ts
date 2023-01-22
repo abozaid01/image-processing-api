@@ -1,10 +1,17 @@
 import express from 'express'
+import router from './routes';
 
 const app = express();
 const port = 3000;
 
-//set endpoint 
-app.get('/api', (req,res)=>{
+//use express middleware
+app.use(express.json());
+
+//use express middleware to get /api endpoint
+app.use('/api',router)
+
+//set root endpoint 
+app.get('/', (req,res)=>{
     res.send('hello world')
 })
 
