@@ -1,8 +1,14 @@
-const msg: string = "hello world!";
-console.log(msg);
+import express from 'express'
 
-const myFunc = (num: number): number => {
-    return num * num;
-};
+const app = express();
+const port = 3000;
 
-export default myFunc;
+//set endpoint 
+app.get('/api', (req,res)=>{
+    res.send('hello world')
+})
+
+//check for port to avoid allready in use error testing
+app.listen(port, ()=> console.log(`Listening on Port ${port}`));
+
+export default app;
