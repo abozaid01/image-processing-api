@@ -21,7 +21,7 @@ const requestValidator = (
     res: express.Response,
     next: express.NextFunction
 ): void => {
-    let flag = true;
+    let flag: boolean = true;
     const ParamsMissed: string[] = [];
     const { fileName, width, height } = req.query;
 
@@ -35,16 +35,20 @@ const requestValidator = (
     if (!fileName) {
         flag = false;
         ParamsMissed.push("fileName");
-    } else if (!width) {
+    }
+    if (!width) {
         flag = false;
         ParamsMissed.push("width");
-    } else if (!height) {
+    }
+    if (!height) {
         flag = false;
         ParamsMissed.push("height");
-    } else if (!flag) {
-        res.status(400).write(
+    }
+    if (!flag) {
+        res.status(400).send(
             `You are missing [${ParamsMissed}] in query parameters`
         );
+        return;
     }
 
     next();

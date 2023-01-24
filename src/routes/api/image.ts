@@ -5,14 +5,6 @@ import { checkFile, resizeImg } from "../../utils/utils";
 
 const image = express.Router();
 
-// const validateQuery = async (
-//     req: express.Request,
-//     res: express.Response,
-//     fileExist: string
-// ) => {
-
-// };
-
 image.get(
     "/",
     async (req: express.Request, res: express.Response): Promise<void> => {
@@ -27,17 +19,46 @@ image.get(
             //because the file in the query doesn't exist, we need to check the original file,
             //by reading it, resizing it, saving it and then loading it.
             const originalPath = `./assets/full/${req.query.fileName}.jpg`;
-            const width = parseInt(req.query.width as string);
-            const height = parseInt(req.query.height as string);
+            let width: unknown = req.query.width as string;
+            let height: unknown = req.query.height as string;
 
-            //validate if the fileName exists
+            //validate the passed parameters are numbers.
+            if ((height as string).match(/[a-z]/gi) !== null) {
+                res.status(400).write("height parameter isn't number");
+                res.end();
+                return;
+            } else {
+                (height as number) = parseInt(height as string);
+            }
+
+            if ((width as string).match(/[a-z]/gi) !== null) {
+                res.status(400).write("width parameter isn't number");
+                res.end();
+                return;
+            } else {
+                (width as number) = parseInt(width as string);
+            }
+
+            // if (isNaN(height as number) || isNaN(width as number)) {
+            //     if (isNaN(height as number)) {
+            //         res.status(400).write(
+            //             "height parameter isn't number or missing"
+            //         );
+            //     } else if (isNaN(width as number)) {
+            //         res.status(400).write(
+            //             "width parameter isn't number or missing"
+            //         );
+            //     }
+            //     res.end();
+            //     return;
+            // }
 
             //if the path is correct and the file exists, then resize the img.
             if (fs.existsSync(originalPath)) {
                 const resizeSuccess = await resizeImg(
                     originalPath,
-                    width,
-                    height,
+                    width as number,
+                    height as number,
                     fileExist[1] //file path
                 );
 
@@ -65,21 +86,6 @@ image.get(
                 res.status(400).end(
                     `File parameter missing or doesn't exist. File Passed MUSt be:${files.toString()}`
                 );
-                return;
-            }
-
-            //validate the passed parameters are numbers.
-            if (isNaN(height) || isNaN(width)) {
-                if (isNaN(height)) {
-                    res.status(400).write(
-                        "height parameter isn't number or missing"
-                    );
-                } else if (isNaN(width)) {
-                    res.status(400).write(
-                        "width parameter isn't number or missing"
-                    );
-                }
-                res.end();
                 return;
             }
 

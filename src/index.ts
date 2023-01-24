@@ -3,7 +3,7 @@ import router from "./routes";
 import { thumbExists } from "./utils/utils";
 
 const app = express();
-const port = 3000;
+const port: number = 3000;
 
 //use express middleware
 app.use(express.json());
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use("/api", router);
 
 //set root endpoint
-app.get("/", (req, res) => {
+app.get("/", (req: express.Request, res: express.Response): void => {
     res.send("hello world");
 });
 
